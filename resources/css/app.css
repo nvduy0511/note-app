@@ -1,3 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.ql-editor {
+    height: 80vh !important;
+}
+html {
+    overflow-y: unset !important;
+}

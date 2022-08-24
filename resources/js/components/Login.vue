@@ -5,7 +5,9 @@
         <div class="h-auto w-1/2 hidden md:block">
             <NoteImage />
         </div>
-        <div id="firebaseui-auth-container" class="m-auto"></div>
+        <v-card class="m-auto" title="Login or Register">
+            <div id="firebaseui-auth-container"></div>
+        </v-card>
     </div>
 </template>
 

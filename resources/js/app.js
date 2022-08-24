@@ -2,19 +2,16 @@ import { createApp } from 'vue';
 
 import App from './App.vue';
 import '@/assets/css/global.css';
-import Login from './components/Login.vue';
-import Home from './components/Home.vue';
-import { createRouter, createWebHistory } from 'vue-router';
 import vuetify from './plugins/vuetify';
-const routes = [
-    { path: '/', component: Home },
-    { path: '/login', component: Login },
-];
-const router = createRouter({
-    history: createWebHistory(),
-    routes,
-});
+import DefaultLayout from './layouts/DefaultLayout.vue';
+import NoneLayout from './layouts/NoneLayout.vue';
+import { router } from './router';
 const app = createApp(App);
+// define global component
+app.component('default-layout', DefaultLayout);
+app.component('none-layout', NoneLayout);
+// use 3th library
 app.use(vuetify);
 app.use(router);
+//mount to HTML
 app.mount('#app');
