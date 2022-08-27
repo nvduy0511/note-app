@@ -35,5 +35,3 @@ export const uiConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
-console.log('runing in firebase config...');

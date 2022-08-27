@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onUnmounted, onMounted } from 'vue';
 import firebase from 'firebase/compat/app';
 import * as firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
@@ -27,9 +27,13 @@ export default {
     },
     setup() {
         const user = ref('nvduy');
-        var ui = new firebaseui.auth.AuthUI(firebase.auth());
-        ui.start('#firebaseui-auth-container', uiConfig);
-
+        onMounted(() => {
+            let ui = firebaseui.auth.AuthUI.getInstance();
+            if (!ui) {
+                ui = new firebaseui.auth.AuthUI(firebase.auth());
+                ui.start('#firebaseui-auth-container', uiConfig);
+            }
+        });
         return {
             user,
         };

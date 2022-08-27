@@ -1,5 +1,5 @@
 <template>
-    <v-app id="inspire">
+    <v-app id="inspire" v-if="user">
         <v-navigation-drawer
             expand-on-hover
             image="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg"
@@ -9,9 +9,12 @@
         >
             <v-list>
                 <v-list-item
-                    prepend-avatar="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.6435-1/107966166_1172185269806218_4096158675165172194_n.jpg?stp=dst-jpg_p240x240&_nc_cat=104&ccb=1-7&_nc_sid=7206a8&_nc_ohc=NaIJ7WbGrG0AX8UiWCQ&_nc_ht=scontent.fsgn2-5.fna&oh=00_AT9Tb5qbPbpAeetdkqaby00b7MZMkPXVntWj35biBtNMCA&oe=632BC3BA"
-                    title="Nguyen Van Duy"
-                    subtitle="nvduy.k19hutech@gmailcom"
+                    :prepend-avatar="
+                        user.photoURL ||
+                        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png'
+                    "
+                    :title="user.displayName"
+                    :subtitle="user.email"
                 ></v-list-item>
             </v-list>
 
@@ -32,6 +35,7 @@
                         value="createNote"
                         to="/create-note"
                     ></v-list-item>
+
                     <v-list-item
                         prepend-icon="mdi-note-multiple"
                         title="Note list"
@@ -67,6 +71,7 @@
                         prepend-icon="mdi-logout"
                         title="Logout"
                         value="logout"
+                        @click="handleLogout"
                     ></v-list-item>
                 </v-list-group>
             </v-list>
@@ -74,7 +79,23 @@
 
         <v-main>
             <!--  -->
+
             <div class="p-4">
+                <div class="mb-15 flex justify-between w-100">
+                    <v-breadcrumbs class="p-0 text-sm" :items="breadCrumbs" divider="/" />
+                    <div
+                        v-if="
+                            pathRoute.includes('/create-note') || pathRoute.includes('/note-list')
+                        "
+                        class="text-gray-500 gap-3 flex cursor-pointer"
+                    >
+                        <span class="text-sm">Share</span>
+                        <v-icon size="small">mdi-comment-text</v-icon>
+                        <v-icon size="small">mdi-timelapse</v-icon>
+                        <v-icon size="small">mdi-star-outline</v-icon>
+                        <v-icon size="small">mdi-dots-horizontal</v-icon>
+                    </div>
+                </div>
                 <slot />
             </div>
         </v-main>
@@ -82,13 +103,45 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity';
+import { ref } from 'vue';
+import { getAuth, signOut } from 'firebase/auth';
+import { useRouter } from 'vue-router';
 export default {
     setup() {
+        const auth = getAuth();
         const open = ref([]);
+        const router = useRouter();
+        let user = null;
+        if (auth.currentUser) user = auth.currentUser;
+
+        const handleLogout = () => {
+            signOut(auth)
+                .then(() => {
+                    // Sign-out successful.
+                    router.push('/login');
+                })
+                .catch((error) => {
+                    // An error happened.
+                    console.log('Error when signOut', { error });
+                });
+        };
         return {
             open,
+            handleLogout,
+            user,
         };
+    },
+    computed: {
+        breadCrumbs() {
+            if (typeof this.$route.meta.breadCrumb === 'function') {
+                return this.$route.meta.breadCrumb.call(this, this.$route);
+            }
+            return this.$route.meta.breadCrumb;
+        },
+        pathRoute() {
+            console.log(this.$route);
+            return this.$route.path;
+        },
     },
 };
 </script>

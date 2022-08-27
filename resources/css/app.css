@@ -1,6 +1,26 @@
-.ql-editor {
+/* .ql-editor {
     height: 80vh !important;
+} */
+
+.ql-bubble .ql-tooltip {
+    z-index: 99999999 !important;
 }
 html {
     overflow-y: unset !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 1em;
 }

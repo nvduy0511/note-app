@@ -6,6 +6,7 @@
         <link rel="icon" href="{{ URL::asset("images/note32.png") }}">
         @vite('resources/css/app.css')
         <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://unpkg.com/@vueup/vue-quill@1.0.0-beta.9/dist/vue-quill.snow.prod.css">
         <title>NoteApp</title>
     </head>
     <body>
